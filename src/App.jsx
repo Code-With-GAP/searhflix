@@ -167,11 +167,11 @@ function App() {
                             ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
                             : "https://via.placeholder.com/300x450?text=No+Image"
                         }
-                        className="w-[150px] h-[150px] rounded-lg"
+                        className="w-[150px] h-[150px] rounded-lg transition-all duration-500 hover:scale-110"
                       />
 
                       <div className="mt-3 text-center">
-                        <h2 className="text-2xl font-bold text-yellow-400">
+                        <h2 className="text-2xl font-bold text-yellow-400 transition-all duration-500 hover:text-teal-600">
                           {movie.title}
                         </h2>
 
