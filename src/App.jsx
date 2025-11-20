@@ -26,7 +26,7 @@ function App() {
     fetchTrending();
   }, []);
 
-  // Search Movies
+  
   const searchMovie = async () => {
     if (!query.trim()) {
       setWarning("⚠️ Please enter a movie name!");
@@ -50,7 +50,7 @@ function App() {
         setMovies(data.results);
       }
 
-      setTrending([]); // Remove trending when searching
+      setTrending([]); 
     } catch (err) {
       console.error("Error fetching movies:", err);
       setWarning("⚠️ Something went wrong. Please try again.");
@@ -70,13 +70,12 @@ function App() {
         <div className="w-full flex">
           <div className="flex w-[90%] h-fit flex-col ">
 
-            {/* SEARCH BAR */}
+            
             <div className="flex w-full mb-4">
               <input
                 type="text"
                 placeholder="Search movie..."
-                className="bg-gradient-to-r from-green-700 to-yellow-400 p-4 text-2xl font-bold capitalize rounded-3xl w-[95%] shadow-inner shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] text-black outline-0 
-                shadow-[0_10px_25px_rgba(0,0,0,0.3)] 
+                className="bg-black/30 backdrop-blur-lg border border-white/10  p-4 text-2xl font-bold capitalize rounded-3xl w-[95%] text-white outline-0  
                 hover:shadow-[0_15px_30px_rgba(0,0,0,0.4)] 
                 focus:shadow-[0_15px_30px_rgba(255,165,0,0.6)] 
                 transition-shadow duration-300 ease-in-out"
@@ -99,16 +98,14 @@ function App() {
               <p className="text-red-500 text-xl font-bold mb-4">{warning}</p>
             )}
 
-            {/* LOADING SPINNER */}
+            
             {loading && (
               <div className="flex justify-center items-center mt-10">
                 <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
 
-            {/* ============================= */}
-            {/*       TRENDING MOVIES        */}
-            {/* ============================= */}
+            
             {!loading && trending.length > 0 && movies.length === 0 && (
               <div className="mt-10 w-full flex flex-col items-center ">
                 <h2 className="text-3xl font-bold text-orange-800 mb-6">
@@ -119,7 +116,7 @@ function App() {
                   {trending.map((movie) => (
                     <div
                       key={movie.id}
-                      className="bg-blue-900 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110 shadow-[10px_10px_10px_10px_25px] shadow-black" 
+                      className="bg-black/30 backdrop-blur-lg border border-white/10 rounded-xl p-6 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110 shadow-[10px_10px_10px_10px_25px] shadow-black" 
                     >
                       <img
                         src={
@@ -149,9 +146,6 @@ function App() {
               </div>
             )}
 
-            {/* ============================= */}
-            {/*       SEARCH RESULTS         */}
-            {/* ============================= */}
             {!loading && movies.length > 0 && (
               <div className="mt-10 w-full flex flex-col items-center">
                 
@@ -159,7 +153,7 @@ function App() {
                   {movies.map((movie) => (
                     <div
                       key={movie.id}
-                      className="bg-gray-800 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110"
+                      className="bg-glass p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110"
                     >
                       <img
                         src={
