@@ -1,14 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false); // loading state
-  const [warning, setWarning] = useState("");   // warning state
+  const [trending, setTrending] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [warning, setWarning] = useState("");
 
   const API_KEY = "43e6549d511b779a98d0bde8ddf5a9a6";
 
+  // Load 20 Trending Movies
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setTrending(data.results.slice(0, 20));
+      } catch (err) {
+        console.error("Error loading trending movies:", err);
+      }
+    };
+
+    fetchTrending();
+  }, []);
+
+  // Search Movies
   const searchMovie = async () => {
     if (!query.trim()) {
       setWarning("⚠️ Please enter a movie name!");
@@ -16,8 +34,8 @@ function App() {
       return;
     }
 
-    setWarning(""); // clear previous warning
-    setLoading(true); // start loading
+    setWarning("");
+    setLoading(true);
 
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
 
@@ -31,41 +49,29 @@ function App() {
       } else {
         setMovies(data.results);
       }
+
+      setTrending([]); // Remove trending when searching
     } catch (err) {
       console.error("Error fetching movies:", err);
       setWarning("⚠️ Something went wrong. Please try again.");
     } finally {
-      setLoading(false); // stop loading
+      setLoading(false);
     }
   };
 
   return (
     <div className="w-full flex p-0 m-0 text-white">
-      <div className="w-[90%] flex flex-col p-4 items-center border-2 border-black">
-        <div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-red-600 font-bold mb-6">
-            SEARCHFLIX
-          </h1>
-        </div>
+      <div className="w-[100%] flex flex-col p-4 items-center justify-center ">
+        
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-red-600 font-bold mb-6">
+          SEARCHFLIX
+        </h1>
 
-        <div className="w-full flex ">
-          {/* Side-Bar */}
-          <div className="text-red-600 text-4xl p-4 w-[10%] flex flex-col border-2 items-start">
-            <button className="">☰</button>
-            <ul className="text-2xl">
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
-              <li>4</li>
-              <li>5</li>
-              <li>6</li>
-              <li>7</li>
-            </ul>
-          </div>
+        <div className="w-full flex">
+          <div className="flex w-[90%] h-fit flex-col ">
 
-          {/* main-content */}
-          <div className="flex w-[90%] h-fit flex-col border-2 border-black">
-            <div className="flex w-full mb-4 border-4 border-black">
+            {/* SEARCH BAR */}
+            <div className="flex w-full mb-4">
               <input
                 type="text"
                 placeholder="Search movie..."
@@ -89,58 +95,105 @@ function App() {
               </button>
             </div>
 
-            {/* Warning Message */}
             {warning && (
               <p className="text-red-500 text-xl font-bold mb-4">{warning}</p>
             )}
 
-            {/* Loading Spinner */}
+            {/* LOADING SPINNER */}
             {loading && (
               <div className="flex justify-center items-center mt-10">
                 <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
 
-            {/* Movie Results */}
-            {!loading && movies.length > 0 && (
-              <div className="mt-10 w-full flex flex-col items-center gap-6">
-                {movies.map((movie) => (
-                  <div
-                    key={movie.id}
-                    className="bg-gray-800 p-4 rounded-xl w-[90%] 
-                    max-w-[40rem] shadow-xl flex gap-4 transition-all duration-400 hover:scale-110"
-                  >
-                    {/* Poster */}
-                    <img
-                      src={
-                        movie.poster_path
-                          ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                          : "https://via.placeholder.com/300x450?text=No+Image"
-                      }
-                      className="w-[150px] h-[150px] rounded-lg hover:scale-115 transition-all duration-500"
-                    />
+            {/* ============================= */}
+            {/*       TRENDING MOVIES        */}
+            {/* ============================= */}
+            {!loading && trending.length > 0 && movies.length === 0 && (
+              <div className="mt-10 w-full flex flex-col items-center ">
+                <h2 className="text-3xl font-bold text-orange-800 mb-6">
+                  Trending Movies 🔥
+                </h2>
 
-                    {/* Details */}
-                    <div>
-                      <h2 className="text-2xl font-bold text-yellow-400">
-                        {movie.title}
-                      </h2>
-                      <p className="text-sm text-gray-300">
-                        {movie.overview || "No description available."}
-                      </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+                  {trending.map((movie) => (
+                    <div
+                      key={movie.id}
+                      className="bg-gray-800 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110 shadow-l shadow-cyan-600" 
+                    >
+                      <img
+                        src={
+                          movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+                            : "https://via.placeholder.com/300x450?text=No+Image"
+                        }
+                        className="w-[150px] h-[170px] rounded-lg transi duration-500 hover:scale-110 "
+                      />
 
-                      <p className="mt-2 text-gray-400">
-                        ⭐ Rating: {movie.vote_average}
-                      </p>
+                      <div className="mt-3 text-center">
+                        <h2 className="text-2xl font-bold text-yellow-400">
+                          {movie.title}
+                        </h2>
 
-                      <p className="text-gray-400">
-                        📅 Release: {movie.release_date}
-                      </p>
+                        <p className="mt-2 text-gray-400">
+                          ⭐ Rating: {movie.vote_average}
+                        </p>
+
+                        <button className="mt-3 bg-red-600 px-4 py-2 rounded-lg text-white font-bold hover:bg-red-800 transition-all">
+                          <a href="https://support.strikingly.com/hc/article_attachments/28715460014491" className="cursor-pointer">Watch Trailer</a>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* ============================= */}
+            {/*       SEARCH RESULTS         */}
+            {/* ============================= */}
+            {!loading && movies.length > 0 && (
+              <div className="mt-10 w-full flex flex-col items-center">
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+                  {movies.map((movie) => (
+                    <div
+                      key={movie.id}
+                      className="bg-gray-800 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110"
+                    >
+                      <img
+                        src={
+                          movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+                            : "https://via.placeholder.com/300x450?text=No+Image"
+                        }
+                        className="w-[150px] h-[150px] rounded-lg"
+                      />
+
+                      <div className="mt-3 text-center">
+                        <h2 className="text-2xl font-bold text-yellow-400">
+                          {movie.title}
+                        </h2>
+
+                        <p className="mt-2 text-gray-400">
+                          ⭐ Rating: {movie.vote_average}
+                        </p>
+
+                        <p className="text-gray-400">
+                          📅 Release: {movie.release_date}
+                        </p>
+
+                        <button className="mt-3 bg-red-600 px-4 py-2 rounded-lg text-white font-bold hover:bg-red-800 transition-all">
+                          <a href="https://support.strikingly.com/hc/article_attachments/28715460014491">Watch Trailer</a>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            )}
+
           </div>
         </div>
       </div>
