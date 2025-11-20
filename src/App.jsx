@@ -75,7 +75,7 @@ function App() {
               <input
                 type="text"
                 placeholder="Search movie..."
-                className="bg-amber-400 p-4 text-2xl font-bold capitalize rounded-3xl w-[95%] text-black outline-0 
+                className="bg-gradient-to-r from-green-700 to-yellow-400 p-4 text-2xl font-bold capitalize rounded-3xl w-[95%] shadow-inner shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] text-black outline-0 
                 shadow-[0_10px_25px_rgba(0,0,0,0.3)] 
                 hover:shadow-[0_15px_30px_rgba(0,0,0,0.4)] 
                 focus:shadow-[0_15px_30px_rgba(255,165,0,0.6)] 
@@ -119,7 +119,7 @@ function App() {
                   {trending.map((movie) => (
                     <div
                       key={movie.id}
-                      className="bg-gray-800 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110 shadow-l shadow-cyan-600" 
+                      className="bg-blue-900 p-4 rounded-xl shadow-xl flex flex-col items-center transition-all duration-400 hover:scale-110 shadow-[10px_10px_10px_10px_25px] shadow-black" 
                     >
                       <img
                         src={
