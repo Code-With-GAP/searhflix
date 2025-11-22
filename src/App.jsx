@@ -109,7 +109,7 @@ function App() {
 
   return (
     <div className="w-full flex p-0 m-0 text-white">
-      <div className="w-[100%] flex flex-col p-4 items-center justify-center ">
+      <div className="w-full flex flex-col p-4 items-center justify-center ">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-red-700 font-bold mb-6">
           SEARCHFLIX
         </h1>
@@ -185,7 +185,7 @@ function App() {
                             ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
                             : "https://via.placeholder.com/300x450?text=No+Image"
                         }
-                        className="w-[100%] h-[80%] rounded-lg transition duration-500 hover:scale-110 "
+                        className="w-full h-[80%] rounded-lg transition duration-500 hover:scale-110 "
                       />
 
                       <div className="mt-3 text-center">
@@ -221,7 +221,7 @@ function App() {
                             ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
                             : "https://via.placeholder.com/300x450?text=No+Image"
                         }
-                        className="w-[100%] h-[80%] rounded-lg transition duration-500 hover:scale-110 "
+                        className="w-full h-[80%] rounded-lg transition duration-500 hover:scale-110 "
                       />
 
                       <div className="mt-3 text-center">
